@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mossega'm Lobby</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+  <meta name="description" content="Lobby multijugador para el juego Snake.">
+  <link rel="stylesheet" href="lobby.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🐍 Mossega'm</h1>
+    
+    <section class="player-setup">
+      <form id="playerForm">
+        <label>
+          Nombre:
+          <input type="text" id="playerName" maxlength="20" required placeholder="Tu nombre">
+        </label>
+        <label>
+          Color:
+          <input type="color" id="playerColor">
+        </label>
+        <button type="submit" id="createBtn">Crear Nueva Partida</button>
+        <button type="button" id="refreshBtn">Actualizar Lista</button>
+      </form>
+    </section>
+    
+    <section class="games-list">
+      <h2>Partidas Disponibles</h2>
+      <div id="loadingGames" class="loading" style="display:none;">Cargando partidas...</div>
+      <ul id="gamesUl"></ul>
+    </section>
+  </div>
+  
+  <script src="lobby.js"></script>
+</body>
+</html>
