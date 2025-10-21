@@ -6,7 +6,7 @@ $db_path = __DIR__ . '/../private/games.db';
 $db = new PDO('sqlite:' . $db_path);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// FUNCIONES AUXILIARES
+// ==================== FUNCIONES AUXILIARES ====================
 // IMPORTANTE: Estas funciones deben estar FUERA del bloque try-catch
 
 // Devuelve el ID del jugador, lo crea si no existe en la cookie
@@ -207,7 +207,7 @@ function move_snakes($game, $p1_snake, $p2_snake, &$fruits) {
     ];
 }
 
-// ENDPOINTS 
+// ==================== ENDPOINTS ====================
 
 $action = $_POST['action'] ?? $_GET['action'] ?? '';
 
@@ -355,12 +355,26 @@ try {
             }
         }
 
-        // Obtiene latencia del jugador si existe
-        $latency = null;
-        $stmt3 = $db->prepare("SELECT latency_ms FROM player_latency WHERE player_id=? AND game_id=? ORDER BY ping_sent DESC LIMIT 1");
-        $stmt3->execute([$player_id, $game_id]);
-        $row = $stmt3->fetch(PDO::FETCH_ASSOC);
-        if ($row) $latency = intval($row['latency_ms']);
+        // Obtiene latencia de ambos jugadores
+        $latency_p1 = null;
+        $latency_p2 = null;
+        
+        if ($game['player1_id']) {
+            $stmt3 = $db->prepare("SELECT latency_ms FROM player_latency WHERE player_id=? AND game_id=? ORDER BY ping_sent DESC LIMIT 1");
+            $stmt3->execute([$game['player1_id'], $game_id]);
+            $row = $stmt3->fetch(PDO::FETCH_ASSOC);
+            if ($row) $latency_p1 = intval($row['latency_ms']);
+        }
+        
+        if ($game['player2_id']) {
+            $stmt4 = $db->prepare("SELECT latency_ms FROM player_latency WHERE player_id=? AND game_id=? ORDER BY ping_sent DESC LIMIT 1");
+            $stmt4->execute([$game['player2_id'], $game_id]);
+            $row = $stmt4->fetch(PDO::FETCH_ASSOC);
+            if ($row) $latency_p2 = intval($row['latency_ms']);
+        }
+        
+        // Tu latencia específica
+        $your_latency = ($player_id === $game['player1_id']) ? $latency_p1 : $latency_p2;
 
         // Construye respuesta
         $resp = [
@@ -385,7 +399,11 @@ try {
             'fruits' => $fruits,
             'winner' => $game['winner'],
             'server_time' => round($now), // Convertir a entero para el cliente
-            'your_latency' => $latency
+            'your_latency' => $your_latency,
+            'latency' => [
+                'player1' => $latency_p1,
+                'player2' => $latency_p2
+            ]
         ];
         
         echo json_encode($resp);

@@ -9,7 +9,13 @@
 </head>
 <body>
   <div class="container">
-    <h1>🐍 Mossega'm </h1>
+    <h1>🐍 Mossega'm</h1>
+    
+    <!-- Estado de conexión -->
+    <div class="connection-status" id="connectionStatus">
+      <div class="connection-indicator" id="connectionIndicator"></div>
+      <span id="connectionText">Conectado</span>
+    </div>
     
     <div id="waitingScreen" class="waiting" style="display: none;">
       <p>⏳ Esperando al otro jugador...</p>
@@ -28,7 +34,20 @@
         </div>
       </div>
       
-      <div class="latency" id="latencyDisplay">Ping: --ms</div>
+      <!-- Latencias de ambos jugadores -->
+      <div class="latency-container">
+        <div class="latency-item">
+          <span>Tu ping:</span>
+          <span class="latency-value" id="yourLatency">--ms</span>
+        </div>
+        <div class="latency-item">
+          <span>Oponente:</span>
+          <span class="latency-value" id="opponentLatency">--ms</span>
+        </div>
+      </div>
+      
+      <div class="latency-advantage" id="latencyAdvantage"></div>
+      <div class="last-update" id="lastUpdate">Última actualización: --</div>
       
       <div class="controls-hint">
         <strong>Controles:</strong> Jugador 1: WASD | Jugador 2: Flechas ⬆️⬇️⬅️➡️
