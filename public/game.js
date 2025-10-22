@@ -514,8 +514,8 @@ function showGameOver() {
       </div>
     </div>
     
-    <div class="game-stats-header">⏱️ Duración de la Partida</div>
-    <div class="stat-value">${durationText}</div>
+    <!-- // se tiene que arreglar <div class="game-stats-header">⏱️ Duración de la Partida</div> -->
+    <!-- <div class="stat-value">${durationText}</div> -->
     
     <div class="game-stats-header">🍎 Tus Estadísticas</div>
     <div class="player-stats">
